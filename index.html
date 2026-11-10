@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Bae — Rheiven &amp; Gleasie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blush:#fdecf1;
+    --blush-deep:#f9d7e3;
+    --cream:#fff8f7;
+    --rose:#c85a7c;
+    --rose-deep:#a83f61;
+    --lily:#d94f8c;
+    --plum:#4a2a3a;
+    --plum-soft:#7a5566;
+    --leaf:#8fae8a;
+    --gold:#e8b98a;
+    --shadow: 0 20px 60px -20px rgba(168,63,97,0.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Quicksand', sans-serif;
+    background: linear-gradient(180deg, #fdf3f6 0%, #fbe7ee 40%, #f9dfe9 100%);
+    color:var(--plum);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+  h1,h2,h3, .display{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    color:var(--rose-deep);
+    margin:0;
+  }
+  #petal-canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:5;
+  }
+
+
+  /* ---------- LOCK SCREEN ---------- */
+  #lock{
+    position:fixed;
+    inset:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: radial-gradient(circle at 50% 20%, #fff0f5 0%, #f6d9e6 70%, #efc9dc 100%);
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+  }
+  #lock.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .lock-card{
+    text-align:center;
+    padding:2.5rem 2rem;
+    max-width:340px;
+    width:88%;
+  }
+  .lock-mark{
+    font-size:2.2rem;
+    margin-bottom:0.4rem;
+  }
+  .lock-title{
+    font-size:1.9rem;
+    margin-bottom:0.3rem;
+    letter-spacing:0.01em;
+  }
+  .lock-sub{
+    font-size:0.92rem;
+    color:var(--plum-soft);
+    margin-bottom:1.6rem;
+  }
+  .dots{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-bottom:1.8rem;
+  }
+  .dot{
+    width:13px;
+    height:13px;
+    border-radius:50%;
+    border:1.5px solid var(--rose);
+    background:transparent;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .dot.filled{
+    background:var(--rose);
+    transform:scale(1.1);
+  }
+  .dots.shake{
+    animation: shake 0.4s ease;
+  }
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-8px);}
+    40%{transform:translateX(8px);}
+    60%{transform:translateX(-6px);}
+    80%{transform:translateX(6px);}
+  }
+  .keypad{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:12px;
+    max-width:280px;
+    margin:0 auto;
+  }
+  .key{
+    aspect-ratio:1;
+    border-radius:50%;
+    border:1px solid var(--blush-deep);
+    background:var(--cream);
+    font-family:'Quicksand', sans-serif;
+    font-size:1.25rem;
+    font-weight:600;
+    color:var(--rose-deep);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform 0.12s ease, background 0.12s ease;
+  }
+  .key:active{
+    transform:scale(0.92);
+    background:var(--blush-deep);
+  }
+  .key.wide{
+    font-size:1rem;
+  }
+  .lock-hint{
+    margin-top:1.4rem;
+    font-size:0.78rem;
+    color:var(--plum-soft);
+    opacity:0.7;
+  }
+
+  /* ---------- MAIN SITE ---------- */
+  #site{
+    position:relative;
+    z-index:2;
+    filter: blur(0px);
+  }
+  section{
+    padding:5.5rem 1.5rem;
+    max-width:640px;
+    margin:0 auto;
+    text-align:center;
+    position:relative;
+  }
+
+  /* HERO */
+  #hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding-top:3rem;
+  }
+  .eyebrow-flower{
+    font-size:2rem;
+    margin-bottom:1.2rem;
+  }
+  .hero-title{
+    font-size:clamp(2.6rem, 9vw, 4.2rem);
+    line-height:1.05;
+    font-style:italic;
+  }
+  .hero-names{
+    margin-top:1rem;
+    font-size:1.1rem;
+    letter-spacing:0.04em;
+    color:var(--plum-soft);
+  }
+  .hero-scroll{
+    margin-top:3.2rem;
+    font-size:0.8rem;
+    color:var(--rose);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+  }
+  .hero-scroll span{
+    width:1px;
+    height:34px;
+    background:linear-gradient(var(--rose), transparent);
+    animation: pulse-line 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse-line{
+    0%,100%{opacity:0.3;}
+    50%{opacity:1;}
+  }
+
+  /* COUNTER */
+  #since .display{
+    font-size:0.95rem;
+    letter-spacing:0.06em;
+    color:var(--plum-soft);
+    margin-bottom:0.6rem;
+    font-family:'Quicksand', sans-serif;
+    font-weight:600;
+  }
+  #since h2{
+    font-size:clamp(1.6rem, 5vw, 2.2rem);
+    margin-bottom:2rem;
+  }
+  .counter-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:0.8rem;
+    max-width:460px;
+    margin:0 auto;
+  }
+  .counter-cell{
+    background:var(--cream);
+    border-radius:18px;
+    padding:1rem 0.4rem;
+    box-shadow:var(--shadow);
+  }
+  .counter-num{
+    font-family:'Cormorant Garamond', serif;
+    font-size:clamp(1.6rem, 6vw, 2.3rem);
+    font-weight:600;
+    color:var(--rose-deep);
+    line-height:1;
+  }
+  .counter-label{
+    margin-top:0.35rem;
+    font-size:0.68rem;
+    letter-spacing:0.05em;
+    color:var(--plum-soft);
+  }
+
+  /* PUZZLE */
+  #puzzle .display{
+    font-size:0.95rem;
+    letter-spacing:0.06em;
+    color:var(--plum-soft);
+    margin-bottom:0.6rem;
+    font-weight:600;
+  }
+  #puzzle h2{
+    font-size:clamp(1.6rem, 5vw, 2.2rem);
+    margin-bottom:0.6rem;
+  }
+  .puzzle-sub{
+    font-size:0.9rem;
+    color:var(--plum-soft);
+    margin-bottom:2rem;
+  }
+  #puzzle-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1.6rem;
+  }
+  #puzzle-board{
+    width:min(340px, 82vw);
+    aspect-ratio:1;
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-template-rows:repeat(4, 1fr);
+    gap:3px;
+    background:var(--blush-deep);
+    border-radius:20px;
+    padding:6px;
+    box-shadow:var(--shadow);
+    transition: background 0.6s ease, box-shadow 0.6s ease, padding 0.6s ease;
+  }
+  #puzzle-board.solved{
+    background:transparent;
+    box-shadow:none;
+    padding:0;
+    gap:0;
+  }
+  .swap-tile{
+    border-radius:6px;
+    background-size: 340px 340px;
+    cursor:pointer;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 10px -2px rgba(168,63,97,0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    user-select:none;
+  }
+  .swap-tile.selected{
+    transform: scale(0.92);
+    box-shadow: 0 0 0 3px var(--rose-deep);
+    z-index: 3;
+  }
+  #puzzle-board.solved .swap-tile{
+    border-radius:0;
+    box-shadow:none;
+    cursor:default;
+  }
+  .tile-num{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.1rem;
+    color:rgba(255,255,255,0.9);
+    text-shadow:0 1px 3px rgba(0,0,0,0.4);
+    pointer-events:none;
+  }
+  .puzzle-note{
+    font-size:0.8rem;
+    color:var(--plum-soft);
+    opacity:0.75;
+    transition: opacity 0.4s ease;
+  }
+  #puzzle-win{
+    padding:1.2rem 1.4rem;
+    background:var(--cream);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    display:none;
+  }
+  #puzzle-win.show{
+    display:block;
+    animation: pop-in 0.5s ease;
+  }
+  .special-photo{
+  width:100%;
+  max-width:300px;
+  margin:1rem auto;
+  display:block;
+
+  border-radius:18px;
+
+  box-shadow:
+    0 12px 30px rgba(168,63,97,0.25);
+}
+  #puzzle-win h3{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1.5rem;
+  color:var(--rose-deep);
+  margin:0.7rem 0;
+}
+
+#puzzle-win p{
+  font-size:0.9rem;
+  line-height:1.6;
+  color:var(--plum-soft);
+}
+  @keyframes pop-in{
+    0%{opacity:0; transform:scale(0.9);}
+    100%{opacity:1; transform:scale(1);}
+  }
+  .shuffle-btn{
+    padding:0.7rem 1.6rem;
+    border-radius:999px;
+    border:1px solid var(--rose);
+    background:transparent;
+    color:var(--rose-deep);
+    font-family:'Quicksand', sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    cursor:pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .shuffle-btn:hover{
+    background:var(--rose);
+    color:#fff;
+  }
+
+  /* MUSIC / SPOTIFY */
+  #music .display{
+    font-size:0.95rem;
+    letter-spacing:0.06em;
+    color:var(--plum-soft);
+    margin-bottom:0.6rem;
+    font-weight:600;
+  }
+  #music h2{
+    font-size:clamp(1.6rem, 5vw, 2.2rem);
+    margin-bottom:0.4rem;
+  }
+  .music-sub{
+    font-size:0.9rem;
+    color:var(--plum-soft);
+    margin-bottom:2rem;
+  }
+  .song-list{
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+    text-align:left;
+  }
+  .song-card{
+    position:relative;
+    overflow:hidden;
+    background:var(--cream);
+    border-radius:18px;
+    padding:1rem 1.1rem;
+    box-shadow:var(--shadow);
+  }
+  .song-card.special{
+    border:1.5px solid var(--gold);
+  }
+  .song-card > *{
+    position:relative;
+    z-index:2;
+  }
+  .song-cover-bg{
+    position:absolute;
+    inset:-25px;
+    background-size:cover;
+    background-position:center;
+    filter:blur(24px) saturate(1.15) brightness(0.9);
+    transform:scale(1.15);
+    opacity:0;
+    transition:opacity 0.7s ease;
+    z-index:0;
+  }
+  .song-cover-bg.loaded{
+    opacity:1;
+  }
+  .song-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0.12), transparent 45%);
+    z-index:1;
+  }
+  .song-label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--rose-deep);
+    font-weight:700;
+    margin-bottom:0.7rem;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+  }
+  .song-cover-bg.loaded ~ .song-label{
+    color:#fff;
+    text-shadow:0 1px 5px rgba(0,0,0,0.4);
+  }
+  .song-label .tag-flower{
+    font-size:0.9rem;
+  }
+  .song-embed-wrap{
+    border-radius:12px;
+    overflow:hidden;
+    min-height:80px;
+    background:var(--blush);
+  }
+  .song-embed-wrap iframe{
+    display:block;
+    width:100%;
+    border:0;
+  }
+  .song-empty{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:1.1rem 1rem;
+    font-size:0.85rem;
+    color:var(--plum-soft);
+    opacity:0.7;
+  }
+  .music-note{
+    margin-top:1.6rem;
+    font-size:0.78rem;
+    color:var(--plum-soft);
+    opacity:0.75;
+  }
+
+  /* PUZZLE GATE */
+  .scroll-lock-hint{
+    text-align:center;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1.05rem;
+    color:var(--rose);
+    padding:0.5rem 1.5rem 2.5rem;
+    opacity:0.85;
+    transition: opacity 0.5s ease;
+  }
+  .scroll-lock-hint.hidden{
+    display:none;
+  }
+  .locked-section{
+    opacity:0.3;
+    filter:blur(3px);
+    pointer-events:none;
+    transition: opacity 0.7s ease, filter 0.7s ease;
+  }
+  .locked-section.unlocked{
+    opacity:1;
+    filter:blur(0);
+    pointer-events:auto;
+  }
+
+  /* LETTER LINK */
+  .letter-teaser{
+    font-size:0.92rem;
+    color:var(--plum-soft);
+    max-width:380px;
+    margin:0 auto 1.8rem;
+    line-height:1.5;
+  }
+  .letter-btn{
+    display:inline-block;
+    padding:0.9rem 2rem;
+    border-radius:999px;
+    background:linear-gradient(135deg, var(--rose), var(--lily));
+    color:#fff;
+    font-family:'Quicksand', sans-serif;
+    font-weight:600;
+    font-size:0.9rem;
+    letter-spacing:0.03em;
+    text-decoration:none;
+    box-shadow:0 12px 30px -10px rgba(168,63,97,0.5);
+    transition: transform 0.2s ease;
+  }
+  .letter-btn:active{
+    transform:scale(0.96);
+  }
+
+  footer{
+    text-align:center;
+    padding:3rem 1.5rem 4rem;
+    font-size:0.78rem;
+    color:var(--plum-soft);
+    opacity:0.7;
+  }
+
+  @media (max-width:420px){
+    .counter-grid{gap:0.5rem;}
+    .counter-cell{padding:0.8rem 0.2rem;}
+    section{padding:4rem 1.2rem;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hero-scroll span{animation:none;}
+    #puzzle-win.show{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="petal-canvas"></canvas>
+
+<!-- LOCK SCREEN -->
+<div id="lock">
+  <div class="lock-card">
+    <div class="lock-mark">❀</div>
+    <div class="lock-title">a little space for us</div>
+    <div class="lock-sub">enter the password to come in</div>
+    <div class="dots" id="dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="keypad" id="keypad">
+      <button class="key" data-k="1">1</button>
+      <button class="key" data-k="2">2</button>
+      <button class="key" data-k="3">3</button>
+      <button class="key" data-k="4">4</button>
+      <button class="key" data-k="5">5</button>
+      <button class="key" data-k="6">6</button>
+      <button class="key" data-k="7">7</button>
+      <button class="key" data-k="8">8</button>
+      <button class="key" data-k="9">9</button>
+      <div></div>
+      <button class="key" data-k="0">0</button>
+      <button class="key wide" data-k="back">⌫</button>
+    </div>
+    <div class="lock-hint">mmdd</div>
+  </div>
+</div>
+
+<!-- MAIN SITE -->
+<div id="site">
+
+  <section id="hero">
+    <div class="eyebrow-flower">❀ ❀ ❀</div>
+    <h1 class="hero-title">My Universe</h1>
+    <div class="hero-names">Gleasie</div>
+    <div class="hero-scroll"><span></span>scroll down</div>
+  </section>
+
+  <section id="puzzle">
+    <div class="display">for you to solve</div>
+    <h2>a little puzzle</h2>
+    <div class="puzzle-sub">tap any two tiles to swap them until the picture is complete</div>
+    <div id="puzzle-wrap">
+      <div id="puzzle-board"></div>
+      <button class="shuffle-btn" id="shuffle-btn">shuffle again</button>
+      <div id="puzzle-win">
+
+  <div style="font-size:1.8rem;">🌸</div>
+
+  <h3>You did it!! mwaaa</h3>
+
+  <img 
+    src="0001.jpg" 
+    alt="Our special memory"
+    class="special-photo"
+  >
+
+  <p>
+    Every little piece deserve to be solve. like your heart.
+  </p>
+
+        </div>
+      <div class="puzzle-note" id="puzzle-note">tips: "Just take your time, and solve it with pure love<3" </div>
+    </div>
+  </section>
+
+  <div class="scroll-lock-hint" id="scroll-lock-hint">✿ solve the puzzle to keep going ✿</div>
+
+  <section id="since" class="locked-section">
+    <div class="display"> since march 31, 2025</div>
+    <h2>this is how long when we talk to each other</h2>
+    <div class="counter-grid">
+      <div class="counter-cell">
+        <div class="counter-num" id="c-days">0</div>
+        <div class="counter-label">days</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num" id="c-hours">0</div>
+        <div class="counter-label">hours</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num" id="c-mins">0</div>
+        <div class="counter-label">minutes</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num" id="c-secs">0</div>
+        <div class="counter-label">seconds</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="music" class="locked-section">
+    <div class="display">our playlist</div>
+    <h2>songs, just for us</h2>
+    <div class="music-sub">press play on any track</div>
+    <div class="song-list" id="song-list"></div>
+  </section>
+
+  <section id="letter-link" class="locked-section">
+    <div class="display">one more thing</div>
+    <h2>i wrote you a letter</h2>
+    <p class="letter-teaser">after all those songs, there's something just for you to read.</p>
+    <a href="letter.html" class="letter-btn">click to see letter</a>
+  </section>
+
+  <footer class="locked-section">made with love, one petal at a time ❀</footer>
+
+</div>
+
+<script>
+/* ================= ORIGINAL PETAL ANIMATION ================= */
+const canvas = document.getElementById('petal-canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+const PETAL_COUNT = 26;
+const petalColors = ['#f3a9c4', '#e88bb0', '#f7c6da', '#d9648f'];
+
+function makePetal(){
+  return {
+    x: Math.random()*W,
+    y: Math.random()*-H,
+    size: 8 + Math.random()*10,
+    speed: 0.5 + Math.random()*1.1,
+    drift: Math.random()*1.2 - 0.6,
+    rot: Math.random()*Math.PI*2,
+    rotSpeed: (Math.random()-0.5)*0.02,
+    sway: Math.random()*Math.PI*2,
+    swaySpeed: 0.01 + Math.random()*0.015,
+    color: petalColors[Math.floor(Math.random()*petalColors.length)],
+    opacity: 0.55 + Math.random()*0.35
+  };
+}
+let petals = Array.from({length: PETAL_COUNT}, makePetal);
+
+function drawPetal(p){
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  ctx.rotate(p.rot);
+  ctx.globalAlpha = p.opacity;
+  ctx.fillStyle = p.color;
+  ctx.beginPath();
+  ctx.moveTo(0, -p.size);
+  ctx.bezierCurveTo(p.size*0.8, -p.size*0.6, p.size*0.8, p.size*0.6, 0, p.size);
+  ctx.bezierCurveTo(-p.size*0.8, p.size*0.6, -p.size*0.8, -p.size*0.6, 0, -p.size);
+  ctx.fill();
+  ctx.restore();
+}
+
+function animatePetals(){
+  ctx.clearRect(0,0,W,H);
+  for(const p of petals){
+    p.y += p.speed;
+    p.sway += p.swaySpeed;
+    p.x += p.drift + Math.sin(p.sway)*0.6;
+    p.rot += p.rotSpeed;
+    if(p.y > H + 20){
+      Object.assign(p, makePetal());
+      p.y = -20;
+    }
+    drawPetal(p);
+  }
+  requestAnimationFrame(animatePetals);
+}
+animatePetals();
+
+/* ================= LOCK SCREEN ================= */
+const CODE = "1110"; // november 10 -> mmdd
+let entered = "";
+const dotsEl = document.getElementById('dots');
+const dots = dotsEl.querySelectorAll('.dot');
+const lockEl = document.getElementById('lock');
+
+function refreshDots(){
+  dots.forEach((d,i)=> d.classList.toggle('filled', i < entered.length));
+}
+  
+document.getElementById('keypad').addEventListener('click', (e)=>{
+  const btn = e.target.closest('.key');
+  if(!btn) return;
+  const k = btn.dataset.k;
+  if(k === 'back'){
+    entered = entered.slice(0, -1);
+    refreshDots();
+    return;
+  }
+  if(entered.length < 4){
+    entered += k;
+    refreshDots();
+  }
+  if(entered.length === 4){
+    if(entered === CODE){
+      setTimeout(()=>{
+        lockEl.classList.add('hidden');
+        startCounter();
+      }, 200);
+    } else {
+      dotsEl.classList.add('shake');
+      setTimeout(()=>{
+        dotsEl.classList.remove('shake');
+        entered = "";
+        refreshDots();
+      }, 400);
+    }
+  }
+});
+
+/* ================= TIME SINCE COUNTER ================= */
+const startDate = new Date(2025, 2, 31, 22, 19, 0); // march 31 2025
+let counterStarted = false;
+
+function updateCounter(){
+  const now = new Date();
+  let diff = Math.max(0, now - startDate);
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  document.getElementById('c-days').textContent = days;
+  document.getElementById('c-hours').textContent = hours;
+  document.getElementById('c-mins').textContent = mins;
+  document.getElementById('c-secs').textContent = secs;
+}
+
+function startCounter(){
+  if(counterStarted) return;
+  counterStarted = true;
+  updateCounter();
+  setInterval(updateCounter, 1000);
+}
+startCounter();
+
+/* ================= SWAP-TILE PUZZLE ================= */
+const boardEl = document.getElementById('puzzle-board');
+const winEl = document.getElementById('puzzle-win');
+const puzzleNoteEl = document.getElementById('puzzle-note');
+const SIZE = 4; // 4x4 = 16 tiles
+const TOTAL = SIZE * SIZE;
+let tileOrder = [];
+let selectedIndex = null;
+let solved = false;
+const PUZZLE_PHOTO = "photo1.jpg";
+
+function initPuzzleOrder(){
+  tileOrder = Array.from({length: TOTAL}, (_, i) => i);
+}
+
+function shufflePuzzle(){
+  solved = false;
+  selectedIndex = null;
+  winEl.classList.remove('show');
+  boardEl.classList.remove('solved');
+  document.getElementById('shuffle-btn').style.display = 'inline-block';
+  if(puzzleNoteEl) puzzleNoteEl.textContent = 'tips: "Tap two tiles to swap their places!"';
+
+  // Shuffle array ensuring it's not solved by default
+  do {
+    for(let i = tileOrder.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [tileOrder[i], tileOrder[j]] = [tileOrder[j], tileOrder[i]];
+    }
+  } while(checkWinCondition());
+
+  renderBoard();
+}
+
+function renderBoard(){
+  boardEl.innerHTML = "";
+  tileOrder.forEach((originalIndex, currentPos) => {
+    const tile = document.createElement('div');
+    tile.className = 'swap-tile';
+    if(currentPos === selectedIndex) tile.classList.add('selected');
+
+    const col = originalIndex % SIZE;
+    const row = Math.floor(originalIndex / SIZE);
+
+    if(PUZZLE_PHOTO){
+      tile.style.backgroundImage = `url("${PUZZLE_PHOTO}")`;
+      tile.style.backgroundPosition = `-${col * 85}px -${row * 85}px`;
+    } else {
+      const hueShift = originalIndex * 5;
+      tile.style.backgroundImage = `linear-gradient(${135 + hueShift}deg, #e37fa8, #d94f8c 40%, #c85a7c 65%, #f2a5c4)`;
+      const num = document.createElement('span');
+      num.className = 'tile-num';
+      num.textContent = originalIndex + 1;
+      tile.appendChild(num);
+    }
+
+    tile.addEventListener('click', () => handleTileClick(currentPos));
+    boardEl.appendChild(tile);
+  });
+}
+
+function handleTileClick(pos){
+  if(solved) return;
+  
+  if(selectedIndex === null){
+    selectedIndex = pos;
+    renderBoard();
+  } else if(selectedIndex === pos){
+    selectedIndex = null;
+    renderBoard();
+  } else {
+    // Swap tiles
+    [tileOrder[selectedIndex], tileOrder[pos]] = [tileOrder[pos], tileOrder[selectedIndex]];
+    selectedIndex = null;
+    renderBoard();
+
+    if(checkWinCondition()){
+      solved = true;
+      boardEl.classList.add('solved');
+      winEl.classList.add('show');
+      document.getElementById('shuffle-btn').style.display = 'none';
+      if(puzzleNoteEl) puzzleNoteEl.textContent = 'scroll down for more ↓';
+      unlockAfterPuzzle();
+    }
+  }
+}
+
+function checkWinCondition(){
+  return tileOrder.every((val, idx) => val === idx);
+}
+
+document.getElementById('shuffle-btn').addEventListener('click', shufflePuzzle);
+initPuzzleOrder();
+shufflePuzzle();
+
+/* ================= PUZZLE GATE ================= */
+let puzzleLocked = true;
+
+function getScrollLimit(){
+  const puzzleSection = document.getElementById('puzzle');
+  const hintEl = document.getElementById('scroll-lock-hint');
+  return puzzleSection.offsetTop + puzzleSection.offsetHeight + hintEl.offsetHeight;
+}
+
+function enforceScrollLock(){
+  if(!puzzleLocked) return;
+  const limit = getScrollLimit();
+  if(window.scrollY > limit){
+    window.scrollTo({top: limit, behavior:'auto'});
+  }
+}
+
+window.addEventListener('scroll', enforceScrollLock, {passive:true});
+window.addEventListener('touchmove', ()=> requestAnimationFrame(enforceScrollLock), {passive:true});
+
+function unlockAfterPuzzle(){
+  puzzleLocked = false;
+  document.getElementById('scroll-lock-hint').classList.add('hidden');
+  document.querySelectorAll('.locked-section').forEach(el=> el.classList.add('unlocked'));
+}
+
+/* ================= SONGS ================= */
+const songs = [
+  { label: "your favorite when we first jam on spotify",    flower: "❀", url: "https://open.spotify.com/track/3Tgv4rvWBVwnbmUTlJwzk0" },
+  { label: "your best favorite",      flower: "❀", url: "https://open.spotify.com/track/22l7ocwYpEYGvYpM9T2C5K" },
+  { label: "your second favorite",    flower : "❀", url: "https://open.spotify.com/track/7fZ9GpxwteD6R1SNL8OPZa" },
+  { label: "your third favorite", flower: "❀", url: "https://open.spotify.com/track/5lYN6iWRzaWm08s0Fhw6eM" },
+  { label: "my favorite",               flower: "❀", url: "https://open.spotify.com/track/3vkCueOmm7xQDoJ17W1Pm3" },
+  { label: "a song we both listen to",  flower: "❀", url: "https://open.spotify.com/track/3W7KHojYGgYaoX9ogKO9hU" },
+  { label: "a song we both listen to",  flower: "❀", url: "https://open.spotify.com/track/3hEfpBHxgieRLz4t3kLNEg" },
+  { label: "one more for us",           flower: "❀", url: "https://open.spotify.com/track/7nxoUuqcsDfv3PsPGeciWy" },
+  { label: "your first recommendation — the special one", flower: "✿", url: "https://open.spotify.com/track/7rpQzmMwS1yW1f0oWxBS9z", special: true }
+];
+
+function extractSpotifyTrackId(input){
+  if(!input) return null;
+  input = input.trim();
+  let m = input.match(/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?track\/([a-zA-Z0-9]+)/);
+  if(m) return m[1];
+  m = input.match(/spotify:track:([a-zA-Z0-9]+)/);
+  if(m) return m[1];
+  if(/^[a-zA-Z0-9]{15,25}$/.test(input)) return input;
+  return null;
+}
+
+function renderSongs(){
+  const listEl = document.getElementById('song-list');
+  listEl.innerHTML = "";
+
+  songs.forEach((song)=>{
+    const card = document.createElement('div');
+    card.className = 'song-card' + (song.special ? ' special' : '');
+
+    const coverBg = document.createElement('div');
+    coverBg.className = 'song-cover-bg';
+    card.appendChild(coverBg);
+
+    const labelRow = document.createElement('div');
+    labelRow.className = 'song-label';
+    labelRow.innerHTML = `<span class="tag-flower">${song.flower}</span><span>${song.label}</span>`;
+    card.appendChild(labelRow);
+
+    const id = extractSpotifyTrackId(song.url);
+
+    if(id){
+      const embedWrap = document.createElement('div');
+      embedWrap.className = 'song-embed-wrap';
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`;
+      iframe.height = "152";
+      iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+      iframe.loading = "lazy";
+      embedWrap.appendChild(iframe);
+      card.appendChild(embedWrap);
+
+      loadCoverArt(song.url, coverBg);
+    } else {
+      const empty = document.createElement('div');
+      empty.className = 'song-empty';
+      empty.innerHTML = `<span>song coming soon ♡</span>`;
+      card.appendChild(empty);
+    }
+
+    listEl.appendChild(card);
+  });
+}
+
+function loadCoverArt(trackUrl, coverEl){
+  const oembedUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(trackUrl)}`;
+  fetch(oembedUrl)
+    .then(res => res.ok ? res.json() : null)
+    .then(data=>{
+      if(data && data.thumbnail_url){
+        coverEl.style.backgroundImage = `url("${data.thumbnail_url}")`;
+        coverEl.classList.add('loaded');
+      }
+    })
+    .catch(()=>{});
+}
+
+renderSongs();
+</script>
+
+</body>
+</html>

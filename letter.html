@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm sorry — for Gleasie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lily-white:#fffaf9;
+    --lily-blush:#fbe4ee;
+    --lily-pink:#e8608f;
+    --lily-deep:#b23764;
+    --lily-magenta:#c23f75;
+    --lily-gold:#e8a94f;
+    --plum:#4a2a3a;
+    --plum-soft:#7a5566;
+    --ink:#5b4636;
+    --shadow: 0 25px 70px -25px rgba(178,55,100,0.45);
+
+    /* ===== FONTS — see the note near the bottom of this file for
+       how to swap these for any Google Font you like ===== */
+    --font-heading: 'Cormorant Garamond', serif;
+    --font-body: 'Quicksand', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--font-body);
+    color:var(--plum);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+    background:
+      radial-gradient(ellipse at 15% 10%, rgba(232,96,143,0.16), transparent 55%),
+      radial-gradient(ellipse at 85% 15%, rgba(232,169,79,0.12), transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(178,55,100,0.14), transparent 60%),
+      linear-gradient(180deg, #fffaf9 0%, #fdeef3 45%, #fbe4ee 100%);
+  }
+  #wine-fade{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse at 15% 10%, rgba(122,16,32,0.5), transparent 55%),
+      radial-gradient(ellipse at 85% 15%, rgba(88,0,0,0.4), transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(88,0,0,0.55), transparent 60%),
+      linear-gradient(180deg, #3a0000 0%, #580000 55%, #2b0000 100%);
+    opacity:0;
+    animation: wineFadeIn 7s ease forwards;
+    animation-delay: 0.4s;
+  }
+  @keyframes wineFadeIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+  }
+
+  main{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:4rem 1.5rem 5rem;
+  }
+
+  .letter-eyebrow{
+    font-size:1.8rem;
+    margin-bottom:0.8rem;
+    color:var(--lily-deep);
+    letter-spacing:0.05em;
+  }
+  .letter-heading{
+    font-family:var(--font-heading);
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(1.8rem, 6vw, 2.6rem);
+    color:var(--lily-deep);
+    margin-bottom:2.4rem;
+    text-align:center;
+  }
+
+  .letter-card{
+    width:min(520px, 88vw);
+    max-width:520px;
+    margin:0 auto;
+    position:relative;
+    padding:3.2rem 2.6rem;
+    border-radius:4px;
+    transform:none;
+    color:var(--ink);
+    background-color:#f4ecd6;
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(139,107,63,0.11), transparent 40%),
+      radial-gradient(circle at 82% 28%, rgba(139,107,63,0.09), transparent 45%),
+      radial-gradient(circle at 30% 85%, rgba(139,107,63,0.10), transparent 42%),
+      radial-gradient(circle at 92% 88%, rgba(139,107,63,0.08), transparent 45%),
+      radial-gradient(circle at 55% 50%, rgba(139,107,63,0.05), transparent 60%),
+      linear-gradient(115deg, rgba(90,60,30,0.05) 0%, transparent 15%, rgba(90,60,30,0.03) 35%, transparent 55%, rgba(90,60,30,0.05) 75%, transparent 95%),
+      linear-gradient(-25deg, transparent 40%, rgba(90,60,30,0.04) 41%, transparent 43%),
+      linear-gradient(200deg, transparent 60%, rgba(90,60,30,0.035) 61%, transparent 63%);
+    box-shadow:
+      0 28px 60px -18px rgba(90,60,30,0.5),
+      inset 0 0 50px rgba(139,107,63,0.14),
+      inset 0 0 4px rgba(139,107,63,0.35);
+  }
+  /* soft folded-corner detail, purely decorative */
+  .letter-card::after{
+    content:'';
+    position:absolute;
+    bottom:0;
+    right:0;
+    width:36px;
+    height:36px;
+    background:linear-gradient(135deg, transparent 50%, rgba(139,107,63,0.25) 50%);
+    border-radius:0 0 4px 0;
+  }
+
+  #letter-body{
+    font-family:var(--font-heading);
+    font-size:clamp(1.15rem, 3.2vw, 1.4rem);
+    line-height:1.85;
+    color:var(--ink);
+    white-space:pre-wrap;
+    text-align:left;
+  }
+  #letter-body .word{
+    opacity:0;
+    filter:blur(4px);
+    display:inline-block;
+    transform:translateY(6px);
+    transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+  }
+  #letter-body .word.visible{
+    opacity:1;
+    filter:blur(0);
+    transform:translateY(0);
+  }
+
+  .letter-sign{
+    margin-top:2rem;
+    font-family:var(--font-heading);
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--lily-deep);
+    opacity:0;
+    transition:opacity 1s ease;
+  }
+  .letter-sign.show{
+    opacity:1;
+  }
+
+  .back-link{
+    margin-top:2.8rem;
+    display:inline-block;
+    padding:0.7rem 1.6rem;
+    border-radius:999px;
+    border:1px solid var(--lily-pink);
+    background:rgba(255,255,255,0.6);
+    color:var(--lily-deep);
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:0.82rem;
+    text-decoration:none;
+    opacity:0;
+    transition: opacity 1s ease, transform 0.2s ease;
+  }
+  .back-link.show{
+    opacity:1;
+  }
+  .back-link:active{
+    transform:scale(0.95);
+  }
+
+  @media (max-width:480px){
+    .letter-card{ padding:2.2rem 1.4rem; }
+  }
+
+  #flower-canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:1;
+  }
+
+/* realistic falling flowers */
+.falling-flower{position:fixed;z-index:1;pointer-events:none;user-select:none;object-fit:contain;will-change:transform,top,left;transform-origin:center;}
+.settled-flower{transition:opacity .8s ease, filter .8s ease;}
+
+/* tap-to-begin gate */
+#music-prompt{
+  position:fixed;
+  inset:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#240607;
+  backdrop-filter:none;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#music-prompt.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+#music-prompt button{
+  padding:1rem 2.4rem;
+  border-radius:999px;
+  border:none;
+  background:linear-gradient(135deg, var(--lily-pink), var(--lily-deep));
+  color:#fff;
+  font-family:var(--font-heading);
+  font-style:italic;
+  font-size:1.2rem;
+  cursor:pointer;
+  box-shadow:0 15px 40px -12px rgba(178,55,100,0.6);
+}
+</style>
+</head>
+<body>
+
+<div id="wine-fade"></div>
+
+<!-- realistic falling flowers — only draws if FALLING_FLOWER_IMG is set below -->
+<canvas id="flower-canvas"></canvas>
+
+<div id="music-prompt">
+  <button id="music-start-btn">♪ tap to begin</button>
+</div>
+
+<main>
+  <div class="letter-eyebrow">✿</div>
+  <h1 class="letter-heading">a message, just for you</h1>
+
+  <div class="letter-card">
+    <div id="letter-body"></div>
+    <div class="letter-sign" id="letter-sign">— Rheiven</div>
+  </div>
+
+  <a href="index.html" class="back-link" id="back-link">← back to our space</a>
+</main>
+
+<!-- ================= BACKGROUND MUSIC =================
+     This must be a DIRECT audio file link (.mp3 / .ogg), not a
+     Spotify page link — Spotify's player can't be embedded as a
+     controllable background track. Host an mp3 anywhere (same
+     folder as this file, Google Drive direct link, etc.) and paste
+     the link below.
+-->
+<audio id="bg-music" loop preload="auto">
+  <source src="" type="audio/mpeg">
+</audio>
+
+<script>
+/* ================= EDIT THESE ================= */
+const BG_MUSIC_URL = "music1.mp3"; // paste a direct .mp3/.ogg link here
+const MAX_VOLUME = 0.35; // "not loud" — adjust 0 to 1
+const FADE_DURATION_MS = 4000; // how long the volume takes to ramp up
+
+// Realistic falling flowers: list your transparent-background PNG
+// photos below, one per line. You can use anywhere from 1 to 10 (or
+// more) — each falling flower on screen randomly picks one of these,
+// so more images = more variety. Leave the array empty to show no
+// falling animation (just the still corner decorations).
+const FALLING_FLOWER_IMGS = [
+  "flower1.png",
+  "flower2.png",
+  "flower3.png",
+  "flower4.png",
+  "flower5.png",
+  "flower6.png",
+  "flower7.png",
+  "flower8.png",
+  "flower9.png",
+  "flower10.png",
+  "flower11.png",
+  "flower12.png",
+  "flower13.png",
+  "flower14.png",
+];
+const FLOWER_COUNT = FALLING_FLOWER_IMGS.length; // automatically matches your images
+
+// Optional: a photo of real paper texture for a fully authentic look.
+// Leave empty to keep the CSS-drawn aged-paper look already applied.
+const PAPER_TEXTURE_URL = "paper1.jpg";
+
+const LETTER_TEXT = `Dear Gleasie,
+
+I don't know if these words will be enough to express everything I've been keeping inside, but I hope you'll take a little time to read them.
+
+First, I'm sorry. I'm sorry for the moments when I made you feel unheard, for the times I didn't know how to respond, and for the things I did that hurt you, whether I realized them at the time or not. I know I have things to work on, and I don't want to keep repeating the same mistakes. I'm still learning how to express myself better, how to understand you better, and how to become someone who can love you the way you deserve.
+
+I know we both have our own mistakes, and I'm not writing this to put all the blame on either of us. Sometimes, even the little tampo turns into something bigger, and the smallest misunderstandings leave us feeling distant from each other. There are moments when I don't know whether to speak, stay quiet, or give you space because I'm afraid of making things worse. And sometimes, I end up feeling like I'm becoming a burden rather than someone you can comfortably share your feelings with. I don't know if you ever feel that way too, but I hope we can reach a point where neither of us has to feel that way.
+
+I miss the little things. The random conversations, the silly moments, the little tampo that we could've easily talked through, and the times when everything felt lighter just because we had each other. I miss being someone you could freely talk to, and I miss having that same comfort with you. I don't want us to become strangers just because we struggled to understand each other.
+
+Despite everything, I still choose to see a future with you. Not because I expect everything to be perfect, but because I believe that what we have is worth understanding, working on, and growing together for. I still want the simple things with you, the random conversations, the silly moments, the little updates about our days, and all the ordinary memories that become special just because they're with you.
+
+I don't expect everything to go back to how it used to be overnight. I just hope that someday, we can look at everything we've been through and realize that we learned how to love each other better. I want us to become two people who don't give up on understanding each other, even when things get difficult.
+
+And today, on your birthday, I hope life gives you more reasons to smile. I hope you receive the happiness, peace, and love you've always deserved. Even if things between us aren't as okay as we'd want them to be right now, that doesn't change how much I wish good things for you.
+
+Thank you for being part of my life, for the memories we've made, and for all the little things you've given me that I'll always appreciate.
+
+I'm still here, still learning, and still hoping that we can write more chapters together.
+
+Happy birthday, my love. I love you. ❤️`;
+
+/* Word-by-word pacing — all editable:
+   WORD_DELAY_MS     = normal gap between words
+   SENTENCE_PAUSE_MS = extra pause automatically added after a word
+                       ending in . ! or ?  (i.e. end of a sentence)
+   COMMA_PAUSE_MS    = extra pause automatically added after a word
+                       ending in a comma
+   For a custom pause anywhere else, type {{pause:800}} (800 = ms)
+   as its own word, surrounded by spaces, right where you want the
+   extra silence — e.g.:
+     "Dear Gleasie, {{pause:900}} I have something to tell you."
+   It adds 900ms of extra pause at that exact spot and is not shown
+   on the page. Stack automatic + manual pauses freely.
+*/
+const WORD_DELAY_MS = 50;
+const SENTENCE_PAUSE_MS = 200;
+const COMMA_PAUSE_MS = 100;
+/* ================================================ */
+
+if(PAPER_TEXTURE_URL){
+  const card = document.querySelector('.letter-card');
+  const existingGradients = getComputedStyle(card).backgroundImage;
+  card.style.backgroundImage = `url("${PAPER_TEXTURE_URL}"), ${existingGradients}`;
+  card.style.backgroundRepeat = 'no-repeat';
+  card.style.backgroundPosition = 'center';
+  card.style.backgroundSize = 'auto 100%';
+  card.style.backgroundAttachment = 'scroll';
+}
+
+/* ================= REALISTIC FALLING + SETTLING FLOWERS ================= */
+let triggerFlowerDrop = null; // set below if flower images are configured; called after the tap
+
+if(FALLING_FLOWER_IMGS.length > 0){
+  const canvas = document.getElementById('flower-canvas');
+  const fctx = canvas.getContext('2d');
+  let fW, fH;
+  function resizeFlowerCanvas(){ fW=canvas.width=innerWidth; fH=canvas.height=innerHeight; }
+  addEventListener('resize', resizeFlowerCanvas); resizeFlowerCanvas();
+
+  const flowerImgs=FALLING_FLOWER_IMGS.map(src=>{const img=new Image();img.src=src;return img;});
+  const FLOWER_DROP_DELAY_MS=7; // delay after the tap, before petals start falling
+  const SETTLE_COUNT=Math.min(4, FLOWER_COUNT);
+  const settled=[];
+  const slots=[
+    {x:0.08,y:0.13}, {x:0.90,y:0.20}, {x:0.10,y:0.78},
+    {x:0.88,y:0.72}, {x:0.50,y:0.08}
+  ];
+  const makeFlower=(settling=false,index=0)=>({
+    img:flowerImgs[Math.floor(Math.random()*flowerImgs.length)],
+    x:Math.random()*fW, y:-60-Math.random()*fH*0.7,
+    size:55+Math.random()*55, speed:0.35+Math.random()*0.55,
+    drift:(Math.random()-.5)*0.28, rot:Math.random()*Math.PI*2,
+    rotSpeed:(Math.random()-.5)*0.006, opacity:.55+Math.random()*.35,
+    settling,index,targetX:settling?slots[index].x*fW:null,targetY:settling?slots[index].y*fH:null
+  });
+  let flowers=[];
+
+  let lastFrame = 0;
+  function animateFlowers(now=0){
+    if(now-lastFrame < 33){ requestAnimationFrame(animateFlowers); return; }
+    lastFrame = now;
+    fctx.clearRect(0,0,fW,fH);
+    for(let i=flowers.length-1;i>=0;i--){
+      const f=flowers[i];
+      if(f.settling){
+        const dx=f.targetX-f.x, dy=f.targetY-f.y;
+        f.x+=dx*.025; f.y+=dy*.025; f.rot+=f.rotSpeed;
+        if(Math.abs(dx)<.8 && Math.abs(dy)<.8){
+          f.x=f.targetX; f.y=f.targetY;
+          settled.push(f); flowers.splice(i,1); continue;
+        }
+      }else{
+        f.y+=f.speed; f.x+=f.drift; f.rot+=f.rotSpeed;
+        if(f.y>fH+100){flowers.splice(i,1); continue;}
+      }
+      drawFlower(f);
+    }
+    for(const f of settled){
+      drawFlower(f);
+    }
+    if(flowers.length||settled.length) requestAnimationFrame(animateFlowers);
+  }
+
+  // draws each photo at its own true aspect ratio (no squashing/stretching),
+  // scaled so its longer side matches f.size
+  function drawFlower(f){
+    if(!(f.img.complete && f.img.naturalWidth)) return;
+    const iw = f.img.naturalWidth, ih = f.img.naturalHeight;
+    const longSide = Math.max(iw, ih);
+    const scale = f.size / longSide;
+    const drawW = iw * scale, drawH = ih * scale;
+    fctx.save(); fctx.translate(f.x,f.y); fctx.rotate(f.rot); fctx.globalAlpha=f.opacity;
+    fctx.drawImage(f.img, -drawW/2, -drawH/2, drawW, drawH); fctx.restore();
+  }
+
+  triggerFlowerDrop = ()=>{
+    flowers=[];
+    settled.length = 0;
+    for(let i=0;i<FLOWER_COUNT;i++) flowers.push(makeFlower(i<SETTLE_COUNT,i));
+    setTimeout(animateFlowers, FLOWER_DROP_DELAY_MS);
+  };
+}
+
+const audio = document.getElementById('bg-music');
+const letterBody = document.getElementById('letter-body');
+const letterSign = document.getElementById('letter-sign');
+const backLink = document.getElementById('back-link');
+const musicPrompt = document.getElementById('music-prompt');
+const musicStartBtn = document.getElementById('music-start-btn');
+
+if(BG_MUSIC_URL){
+  audio.querySelector('source').src = BG_MUSIC_URL;
+  audio.load();
+}
+
+function fadeInVolume(){
+  audio.volume = 0;
+  const steps = 40;
+  const stepTime = FADE_DURATION_MS / steps;
+  let current = 0;
+  const fade = setInterval(()=>{
+    current++;
+    audio.volume = Math.min(MAX_VOLUME, (MAX_VOLUME * current) / steps);
+    if(current >= steps) clearInterval(fade);
+  }, stepTime);
+}
+
+// tap-to-begin: the click itself is the user gesture that lets the
+// browser allow audio.play() reliably — this is why the prompt is
+// back instead of trying (and often failing) to autoplay silently.
+  // Disable button until images are pre-loaded
+musicStartBtn.disabled = true;
+musicStartBtn.textContent = "loading flowers...";
+Promise.all(
+  FALLING_FLOWER_IMGS.map(src => new Promise(resolve => {
+    const img = new Image();
+    img.onload = resolve;
+    img.onerror = resolve; // prevents getting stuck if an image fails
+    img.src = src;
+  }))
+).then(() => {
+  musicStartBtn.disabled = false;
+  musicStartBtn.textContent = "♪ tap to begin";
+});
+  
+function beginExperience(){
+  musicPrompt.classList.add('hidden');
+  const proceed = ()=>{
+    setTimeout(startTyping, BG_MUSIC_URL ? 900 : 200);
+    if(triggerFlowerDrop) triggerFlowerDrop();
+  };
+  if(BG_MUSIC_URL){
+    audio.play().then(()=>{ fadeInVolume(); proceed(); }).catch(proceed);
+  } else {
+    proceed();
+  }
+}
+musicStartBtn.addEventListener('click', beginExperience);
+
+/* ================= WORD-BY-WORD REVEAL (with per-sentence pacing) ================= */
+function startTyping(){
+  const paragraphs = LETTER_TEXT.split(/\n\s*\n/);
+  letterBody.innerHTML = "";
+
+  const steps = []; // { span, delay } — delay = ms to wait AFTER this word appears
+  paragraphs.forEach((para, pIdx)=>{
+    let extraPause = 0; // accumulated from any {{pause:N}} tags since the last real word
+    const tokens = para.trim().split(/\s+/);
+    tokens.forEach(tok=>{
+      const pauseMatch = tok.match(/^\{\{pause:(\d+)\}\}$/);
+      if(pauseMatch){
+        extraPause += parseInt(pauseMatch[1], 10);
+        return; // not a visible word — just banks extra delay for the next one
+      }
+
+      const span = document.createElement('span');
+      span.className = 'word';
+      span.textContent = tok + ' ';
+      letterBody.appendChild(span);
+
+      let delay = WORD_DELAY_MS + extraPause;
+      if(/[.!?]["')]?$/.test(tok)) delay += SENTENCE_PAUSE_MS;
+      else if(/,["')]?$/.test(tok)) delay += COMMA_PAUSE_MS;
+      extraPause = 0;
+
+      steps.push({ span, delay });
+    });
+    if(pIdx < paragraphs.length - 1){
+      letterBody.appendChild(document.createElement('br'));
+      letterBody.appendChild(document.createElement('br'));
+    }
+  });
+
+  let i = 0;
+  function revealNext(){
+    if(i >= steps.length){
+      letterSign.classList.add('show');
+      backLink.classList.add('show');
+      return;
+    }
+    steps[i].span.classList.add('visible');
+    const d = steps[i].delay;
+    i++;
+    setTimeout(revealNext, d);
+  }
+
+  revealNext();
+}
+</script>
+
+</body>
+</html>
